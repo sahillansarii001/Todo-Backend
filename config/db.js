@@ -6,6 +6,9 @@ const connectDB = async () => {
     console.log(`MongoDb Connected ${conn.connection.host}`);
   } catch (error) {
     console.log(`Error: ${error.message}`);
+    if (error.message.includes("ETIMEOUT") || error.message.includes("whitelist")) {
+      console.log("TIP: Check your MongoDB Atlas IP Whitelist settings.");
+    }
     process.exit(1);
   }
 };
