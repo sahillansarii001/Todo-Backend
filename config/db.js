@@ -2,13 +2,10 @@ import mongoose from "mongoose";
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URL);
-    console.log(`MongoDb Connected ${conn.connection.host}`);
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.log(`Error: ${error.message}`);
-    if (error.message.includes("ETIMEOUT") || error.message.includes("whitelist")) {
-      console.log("TIP: Check your MongoDB Atlas IP Whitelist settings.");
-    }
+    console.error(`Error: ${error.message}`);
     process.exit(1);
   }
 };

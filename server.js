@@ -4,23 +4,23 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import todoRoutes from "./routes/todo.routes.js";
 
-// Load env variables
 dotenv.config();
 
-// Connect to database
+// Connect DB
 connectDB();
 
 const app = express();
 
 // Middleware
-app.use(express.json()); // Allows us to parse JSON data from the request body
+app.use(express.json());
 app.use(cors());
 
-// Basic Route
+// Root route
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("API is running 🚀");
 });
 
+// Routes
 app.use("/api/todo", todoRoutes);
 
 const PORT = process.env.PORT || 5000;
