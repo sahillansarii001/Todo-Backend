@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Todo from "../models/todo.models.js";
 
 export const getTodos = async (req, res) => {
@@ -14,11 +13,6 @@ export const getTodos = async (req, res) => {
 export const getTodo = async (req, res) => {
   try {
     const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid todo ID format" });
-    }
-
     const todo = await Todo.findById(id);
 
     if (!todo) {
@@ -27,8 +21,8 @@ export const getTodo = async (req, res) => {
 
     res.status(200).json(todo);
   } catch (error) {
-    console.log("Error in getTodo:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -54,11 +48,6 @@ export const createTodo = async (req, res) => {
 export const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid todo ID format" });
-    }
-
     const todo = await Todo.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
@@ -70,19 +59,14 @@ export const updateTodo = async (req, res) => {
 
     res.status(200).json(todo);
   } catch (error) {
-    console.log("Error in updateTodo:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  } 
 };
 
 export const deleteTodo = async (req, res) => {
   try {
     const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid todo ID format" });
-    }
-
     const todo = await Todo.findByIdAndDelete(id);
 
     if (!todo) {
@@ -91,7 +75,7 @@ export const deleteTodo = async (req, res) => {
 
     res.status(200).json({ message: "Todo deleted successfully", id });
   } catch (error) {
-    console.log("Error in deleteTodo:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };

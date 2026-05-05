@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 import todoRoutes from "./routes/todo.routes.js";
 
@@ -14,6 +15,17 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+
+// DB Connection check middleware
+app.use((req, res, next) => {
+  if (mongoose.connection.readyState !== 1 && req.path.startsWith("/api")) {
+    return res.status(503).json({ 
+      message: "Database not connected. Please check if your IP is whitelisted in MongoDB Atlas.",
+      status: "error"
+    });
+  }
+  next();
+});
 
 // Root route
 app.get("/", (req, res) => {
